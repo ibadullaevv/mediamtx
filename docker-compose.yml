@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: ${CONTAINER_NAME:-mediamtx}
+    restart: unless-stopped
+    ports:
+      # RTSP
+      - "${RTSP_PORT:-8554}:8554/tcp"
+      - "${RTSP_PORT:-8554}:8554/udp"
+      # RTMP
+      - "${RTMP_PORT:-1935}:1935/tcp"
+      # HLS
+      - "${HLS_PORT:-8888}:8888/tcp"
+      # API
+      - "${API_PORT:-9997}:9997/tcp"
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml
+      # HLS segment storage
+      - ./hls_data:/hls_data
+    environment:
+      - MTX_PROTOCOLS=tcp
+      - MTX_RTSPADDRESS=:8554
+      - MTX_RTMPADDRESS=:1935
+      - MTX_HLSADDRESS=:8888
+      - MTX_APIADDRESS=:9997
+      - MTX_LOGLEVEL=${LOG_LEVEL:-info}

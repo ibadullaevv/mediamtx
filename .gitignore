@@ -1,0 +1,21 @@
+# MediaMTX Docker .gitignore
+
+# HLS data directory
+/hls_data/
+
+# Environment variables
+.env
+
+# Docker volumes
+/data/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Personal settings
+*personal*
+*credentials*

@@ -1,0 +1,124 @@
+###############################################
+# MediaMTX konfiguratsiya fayli
+# Mukammal HLS serveri uchun
+
+###############################################
+# Umumiy sozlamalar
+
+# Log darajasi: debug, info, warn, error
+logLevel: ${LOG_LEVEL:-info}
+
+# RTSPni faollashtirish
+rtspEnable: yes
+rtspPort: 8554
+rtspProtocol: tcp
+
+# RTPni faollashtirish
+rtpEnable: yes
+rtpPort: 8000
+
+# RTMPni faollashtirish
+rtmpEnable: yes
+rtmpPort: 1935
+
+# HLSni faollashtirish
+hlsEnable: yes
+hlsPort: 8888
+hlsDirectory: /hls_data
+hlsSegmentCount: ${HLS_SEGMENT_COUNT:-7}
+hlsSegmentDuration: ${HLS_SEGMENT_DURATION:-1s}
+hlsPartDuration: 200ms
+hlsAlwaysRemux: yes
+# HLS va DASH uchun zamonaviy kodeklar
+hlsVariant: lowLatency
+hlsEncryption: no
+
+# DASHni faollashtirish (ixtiyoriy)
+dashEnable: no
+
+# APIni faollashtirish
+apiEnable: yes
+apiPort: 9997
+
+# Xotira yozishlarining maksimal hajmi
+readBufferSize: 4194304
+
+# Ulash va exodimlarga bog'liq sozlamalar
+runOnConnect: ffmpeg -hide_banner -loglevel error -i rtsp://localhost:$RTSP_PORT/$RTSP_PATH -c copy -f segment -segment_time 3600 -segment_format mp4 -strftime 1 -reset_timestamps 1 /hls_data/rec_$RTSP_PATH_%Y%m%d_%H%M%S.mp4
+
+###############################################
+# Protokollar va yo'llar sozlamalari
+
+paths:
+  # Barcha yo'llar uchun standart sozlamalar
+  all:
+    # Stream yozib olish (serverda disk bo'shligini nazorat qilish kerak)
+    record: no
+    # Xotiraga yozish vaqti (soatlarda)
+    recordPath: /hls_data/rec
+
+    # HLS formatini yoqish
+    hls: yes
+    hlsDisable: no
+
+    # DASH formatini yoqish (ixtiyoriy)
+    dash: no
+    dashDisable: yes
+
+    # Yuklash va ko'rish uchun autentifikatsiya
+    publishUser: ${ADMIN_USER:-admin}
+    publishPass: ${ADMIN_PASSWORD:-admin}
+    publishIPs: []
+    readUser: ""
+    readPass: ""
+    readIPs: []
+
+    # Fallback image agar kamera o'chib qolsa
+    fallback: /hls_data/no_signal.jpg
+
+  # Siz kameralaringizni quyidagi formatda qo'shing
+  # Kamera1 - Asosiy kirish eshigi
+  entrance:
+    # Kamera RTSP manzili
+    source: ${CAMERA1_URL:-rtsp://username:password@192.168.1.101:554/stream}
+    # Faqat kerak bo'lganda ishlaydigan source
+    sourceOnDemand: yes
+    # Ishga tushish uchun kutish vaqti
+    sourceOnDemandStartTimeout: 10s
+    # Oxirgi ko'ruvchi ketgandan so'ng o'chish vaqti
+    sourceOnDemandCloseAfter: 15s
+
+  # Kamera2 - Parking
+  parking:
+    source: ${CAMERA2_URL:-rtsp://username:password@192.168.1.102:554/stream}
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 10s
+    sourceOnDemandCloseAfter: 15s
+
+  # Kamera3 - Orqa hovli
+  backyard:
+    source: ${CAMERA3_URL:-rtsp://username:password@192.168.1.103:554/stream}
+    sourceOnDemand: yes
+
+  # FFmpeg orqali test video yuklash
+  test:
+    # Stream manbaai - test pattern
+    source: ffmpeg -re -f lavfi -i testsrc=size=1280x720:rate=25 -pix_fmt yuv420p -c:v libx264 -preset ultrafast -tune zerolatency -g 25 -b:v 1M -f rtsp rtsp://localhost:8554/test_internal
+    sourceOnDemand: yes
+
+  # Tashqi RTMP stream
+  external:
+    # Bu yerga o'zingizning RTMP sourceni ko'rsating
+    # Masalan, YouTube/Facebook/Twitch streamni qayta uzatish uchun
+    source: ${EXTERNAL_STREAM_URL}
+    sourceOnDemand: yes
+    sourceOnDemandStartTimeout: 30s
+    sourceOnDemandCloseAfter: 30s
+
+###############################################
+# Metrikalar va monitoring
+
+metrics: yes
+metricsAddress: :9998
+pprof: yes
+pprofAddress: :9999
