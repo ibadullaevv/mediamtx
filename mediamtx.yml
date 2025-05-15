@@ -80,7 +80,7 @@ paths:
   # Kamera1 - Asosiy kirish eshigi
   entrance:
     # Kamera RTSP manzili
-    source: ${CAMERA1_URL:-rtsp://username:password@192.168.1.101:554/stream}
+    source: ${CAMERA1_URL:-rtsp://admin:ehue2019@10.10.27.37/stream}
     # Faqat kerak bo'lganda ishlaydigan source
     sourceOnDemand: yes
     # Ishga tushish uchun kutish vaqti
