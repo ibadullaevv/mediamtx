@@ -73,10 +73,10 @@ if [ $? -eq 0 ]; then
   API_PORT=${API_PORT:-9997}
 
   echo -e "\n${YELLOW}Server manzillari:${NC}"
-  echo -e "RTSP: ${GREEN}rtsp://localhost:${RTSP_PORT}${NC}"
-  echo -e "RTMP: ${GREEN}rtmp://localhost:${RTMP_PORT}${NC}"
-  echo -e "HLS:  ${GREEN}http://localhost:${HLS_PORT}${NC}"
-  echo -e "API:  ${GREEN}http://localhost:${API_PORT}${NC}"
+  echo -e "RTSP: ${GREEN}rtsp://10.90.100.67:${RTSP_PORT}${NC}"
+  echo -e "RTMP: ${GREEN}rtmp://10.90.100.67:${RTMP_PORT}${NC}"
+  echo -e "HLS:  ${GREEN}http://10.90.100.67:${HLS_PORT}${NC}"
+  echo -e "API:  ${GREEN}http://10.90.100.67:${API_PORT}${NC}"
 
   echo -e "\n${YELLOW}Sinab ko'rish uchun:${NC}"
   echo -e "  scripts/test-stream.sh"
