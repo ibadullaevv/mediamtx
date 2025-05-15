@@ -42,16 +42,16 @@ if [ -d scripts ]; then
 fi
 
 # Docker Compose o'rnatilganini tekshirish
-echo -e "${YELLOW}Docker Compose tekshirish...${NC}"
-if command -v docker-compose &> /dev/null; then
-  echo -e "${GREEN}✓ Docker Compose o'rnatilgan${NC}"
-else
-  echo -e "${RED}✗ Docker Compose topilmadi${NC}"
-  echo "Iltimos, Docker va Docker Compose o'rnating:"
-  echo "Ubuntu: sudo apt install docker.io docker-compose"
-  echo "CentOS: sudo yum install docker docker-compose"
-  exit 1
-fi
+#echo -e "${YELLOW}Docker Compose tekshirish...${NC}"
+#if command -v docker-compose &> /dev/null; then
+#  echo -e "${GREEN}✓ Docker Compose o'rnatilgan${NC}"
+#else
+#  echo -e "${RED}✗ Docker Compose topilmadi${NC}"
+#  echo "Iltimos, Docker va Docker Compose o'rnating:"
+#  echo "Ubuntu: sudo apt install docker.io docker-compose"
+#  echo "CentOS: sudo yum install docker docker-compose"
+#  exit 1
+#fi
 
 # Serverini ishga tushirish
 echo -e "${YELLOW}MediaMTX serverini ishga tushirish...${NC}"
