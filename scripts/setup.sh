@@ -55,7 +55,7 @@ fi
 
 # Serverini ishga tushirish
 echo -e "${YELLOW}MediaMTX serverini ishga tushirish...${NC}"
-docker-compose up -d
+docker compose up -d
 
 # Natija tekshirish
 if [ $? -eq 0 ]; then
